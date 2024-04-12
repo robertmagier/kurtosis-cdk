@@ -97,3 +97,45 @@ def run(plan, args):
         "github.com/0xPolygon/kurtosis-cdk/static-files/dashboards",
         name="grafana" + args["deployment_suffix"],
     )
+
+    elasticsearch = plan.add_service(
+        name="elasticsearch" + args["deployment_suffix"],
+        config=ServiceConfig(
+            image="docker.elastic.co/elasticsearch/elasticsearch:8.13.2",
+            ports={"http": PortSpec(9200, application_protocol="http")},
+            env_vars={
+                "discovery.type": "single-node",
+                "http.host": "0.0.0.0",
+                "transport.host": "127.0.0.1",
+                "xpack.security.enabled": "false",
+                "ES_JAVA_OPTS": "-Xms750m -Xmx750m",
+            },
+        ),
+    )
+
+    fluent_bit_template = read_file(src="./templates/observability/fluent-bit.conf")
+    fluent_bit_artifact = plan.render_templates(
+        config={
+            "fluent-bit.conf": struct(
+                template=fluent_bit_template,
+                data={
+                    "elasticsearch": elasticsearch.ip_address,
+                }
+            )
+        },
+    )
+
+    plan.add_service(
+        name="fluent-bit" + args["deployment_suffix"],
+        config=ServiceConfig(
+            image="cr.fluentbit.io/fluent/fluent-bit",
+            ports={
+                "logs-tcp": PortSpec(24224, transport_protocol="TCP"),
+                "logs-udp": PortSpec(24224, transport_protocol="UDP"),
+            },
+            files={
+                "/fluent-bit/etc": fluent_bit_artifact,
+            },
+        ),
+    )
+
