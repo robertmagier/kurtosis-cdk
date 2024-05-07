@@ -35,7 +35,7 @@ def run(
         "blockscout_visualizer_image": "ghcr.io/blockscout/visualizer:main",
         "zkevm_bridge_ui_image": "leovct/zkevm-bridge-ui:multi-network",
         "zkevm_bridge_proxy_image": "haproxy:2.9.7",
-        "workload_image": "leovct/workload:0.0.1",
+        "toolbox_image": "leovct/toolbox:0.0.1",
         "zkevm_hash_db_port": 50061,
         "zkevm_executor_port": 50071,
         "zkevm_aggregator_port": 50081,
@@ -149,6 +149,18 @@ def run(
     """
     plan.print("Deploying CDK environment...")
 
+    # Test
+    get_rollup_info_template = read_file(src="./templates/get-rollup-info.sh")
+    get_rollup_info_artifact = plan.render_templates(
+        name="get-rollup-info-artifact",
+        config={
+            "get-rollup-info.sh": struct(
+                template=get_rollup_info_template,
+                data={},
+            )
+        },
+    )
+
     # Deploy a local L1.
     if deploy_l1:
         plan.print("Deploying a local L1")
@@ -219,7 +231,7 @@ def run(
 
     # Apply workload
     if apply_workload:
-        plan.print("Apply workload")
+        plan.print("Applying workload")
         workload_package.run(plan, args)
     else:
         plan.print("Skipping workload application")
