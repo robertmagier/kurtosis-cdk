@@ -169,7 +169,7 @@ args:
   ## L1 configuration.
   l1_chain_id: 11155111
   l1_preallocated_mnemonic: adjust champion hammer flight valve gaze diesel hole asthma amazing human always
-  l1_funding_amount: 1ether
+  l1_funding_amount: 0.1ether
   l1_rpc_url: https://sepolia.infura.io/v3/8f359517b5884e6d9ceb6cba3230f9e5
   l1_ws_url: wss://sepolia.infura.io/ws/v3/8f359517b5884e6d9ceb6cba3230f9e5
   # https://github.com/kurtosis-tech/ethereum-package/tree/main?tab=readme-ov-file#configuration
