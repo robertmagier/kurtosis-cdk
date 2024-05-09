@@ -3,7 +3,7 @@
 # The deployment process is divided into various stages.
 
 # Deploy local L1.
-deploy_l1: true
+deploy_l1: false
 
 # Deploy zkevm contracts on L1 (and also fund accounts).
 deploy_zkevm_contracts_on_l1: true
@@ -167,17 +167,18 @@ args:
   zkevm_db_blockscout_stats_password: M07Q9hBoD5vN40LHIIplBtDpi5DGuMEd
 
   ## L1 configuration.
-  l1_chain_id: 271828
-  l1_preallocated_mnemonic: code code code code code code code code code code code quality
-  l1_funding_amount: 100ether
-  l1_rpc_url: http://el-1-geth-lighthouse:8545
-  l1_ws_url: ws://el-1-geth-lighthouse:8546
+  l1_chain_id: 11155111
+  l1_preallocated_mnemonic: adjust champion hammer flight valve gaze diesel hole asthma amazing human always
+  l1_funding_amount: 1ether
+  l1_rpc_url: https://sepolia.infura.io/v3/8f359517b5884e6d9ceb6cba3230f9e5
+  l1_ws_url: wss://sepolia.infura.io/ws/v3/8f359517b5884e6d9ceb6cba3230f9e5
   # https://github.com/kurtosis-tech/ethereum-package/tree/main?tab=readme-ov-file#configuration
   l1_additional_services: [
     # blockscout, # block explorer
     # dora, # beaconchain explorer
     # el_forkmon, # fork monitor tool
   ]
+
 
   ## Rollup configuration.
 
